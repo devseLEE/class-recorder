@@ -1,26 +1,20 @@
 # streamlit_app_full.py
 # 📌 통합 Streamlit 앱: 교과 등록 ~ 출결 조회까지 전 기능 구현
 
-from firebase_admin import credentials, firestore, storage, initialize_app
-import firebase_admin
-import datetime
+import streamlit as st
 import pandas as pd
 from datetime import date
-import os
-import json
-import streamlit as st
-from firebase_admin import credentials
+import firebase_admin
+from firebase_admin import credentials, firestore, storage
 
-# --- Firebase 초기화 (Streamlit secrets에서 키 불러오기) ---
+# --- Firebase 초기화 ---
 if not firebase_admin._apps:
-    # Streamlit Cloud 환경에서는 secrets.toml에서 키를 불러옵니다
-    firebase_key_dict = st.secrets["general"]["firebase_key"]
-    cred = credentials.Certificate(firebase_key_dict)
-    initialize_app(cred, {
-        'storageBucket': 'class-recoder.appspot.com'  # 버킷 이름 정확히 확인
+    cred = credentials.Certificate(dict(st.secrets["FIREBASE_KEY"]))
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': f"{st.secrets['FIREBASE_KEY']['project_id']}.appspot.com"
     })
 
-# --- Firebase 서비스 객체 생성 ---
+# --- Firebase 객체 생성 ---
 db = firestore.client()
 bucket = storage.bucket()
 
@@ -34,7 +28,7 @@ menu = st.sidebar.selectbox("메뉴 선택", [
 if menu == "교과 등록/조회":
     st.header("📥 교과 등록")
     subject = st.selectbox("교과명", ["국어", "도덕", "사회", "수학", "과학", "체육", "실과", "음악", "미술", "영어"])
-    year = st.selectbox("학년도", list(range(2015, 2025)))
+    year = st.selectbox("학년도", list(range(2022, 2027)))
     semester = st.selectbox("학기", [1, 2])
     file = st.file_uploader("수업 및 평가계획서 업로드 (PDF, 10MB 이하)", type="pdf")
 
