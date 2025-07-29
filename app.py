@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 import toml
 
+
 # --- Firebase 초기화 (secrets.toml 기반) ---
 @st.cache_resource
 def init_firebase():
