@@ -9,7 +9,6 @@ import pandas as pd
 from datetime import date
 import os, json
 
-
 # --- Firebase 초기화 ---
 if not firebase_admin._apps:
     firebase_key = json.loads(os.environ["FIREBASE_KEY"])  # json을 못 올리니까(보안정책) 코드 안에 넣기
