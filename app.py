@@ -9,6 +9,7 @@ from datetime import date
 import os
 import json
 import streamlit as st
+from firebase_admin import credentials
 
 # --- Firebase 초기화 (Streamlit secrets에서 키 불러오기) ---
 if not firebase_admin._apps:
