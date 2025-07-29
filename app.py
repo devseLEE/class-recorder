@@ -7,10 +7,12 @@ import firebase_admin
 import datetime
 import pandas as pd
 from datetime import date
+import os, json
 
 # --- Firebase 초기화 ---
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase_key.json")
+    firebase_key = json.loads(os.environ["FIREBASE_KEY"])  # json을 못 올리니까(보안정책) 코드 안에 넣기
+    cred = credentials.Certificate(firebase_key.json)  # 파일 이름이 아닌 환경변수를 읽으니까 ""지우기 *정의된 firebase_key
     initialize_app(cred, {
         'storageBucket': 'class-recoder.firebasestorage.app'
     })
