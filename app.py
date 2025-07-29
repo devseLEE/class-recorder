@@ -1,22 +1,25 @@
 # streamlit_app_full.py
 # 📌 통합 Streamlit 앱: 교과 등록 ~ 출결 조회까지 전 기능 구현
 
-import streamlit as st
 from firebase_admin import credentials, firestore, storage, initialize_app
 import firebase_admin
 import datetime
 import pandas as pd
 from datetime import date
-import os, json
+import os
+import json
+import streamlit as st
 
-# --- Firebase 초기화 ---
+# --- Firebase 초기화 (Streamlit secrets에서 키 불러오기) ---
 if not firebase_admin._apps:
-    firebase_key = json.loads(os.environ["FIREBASE_KEY"])  # json을 못 올리니까(보안정책) 코드 안에 넣기
-    cred = credentials.Certificate(firebase_key.json)  # 파일 이름이 아닌 환경변수를 읽으니까 ""지우기 *정의된 firebase_key
+    # Streamlit Cloud 환경에서는 secrets.toml에서 키를 불러옵니다
+    firebase_key_dict = json.loads(st.secrets["general"]["firebase_key"])
+    cred = credentials.Certificate(firebase_key_dict)
     initialize_app(cred, {
-        'storageBucket': 'class-recoder.firebasestorage.app'
+        'storageBucket': 'class-recoder.appspot.com'  # 버킷 이름 정확히 확인
     })
 
+# --- Firebase 서비스 객체 생성 ---
 db = firestore.client()
 bucket = storage.bucket()
 
