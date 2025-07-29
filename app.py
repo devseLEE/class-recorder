@@ -13,7 +13,7 @@ import streamlit as st
 # --- Firebase 초기화 (Streamlit secrets에서 키 불러오기) ---
 if not firebase_admin._apps:
     # Streamlit Cloud 환경에서는 secrets.toml에서 키를 불러옵니다
-    firebase_key_dict = json.loads(st.secrets["general"]["firebase_key"])
+    firebase_key_dict = st.secrets["general"]["firebase_key"]
     cred = credentials.Certificate(firebase_key_dict)
     initialize_app(cred, {
         'storageBucket': 'class-recoder.appspot.com'  # 버킷 이름 정확히 확인
